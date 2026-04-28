@@ -1,0 +1,12 @@
+streamlit
+pandas
+numpy
+yfinance
+plotly.graph_objects
+plotly.express
+make_subplots
+sklearn.linear_model
+sklearn.preprocessing
+sklearn.metrics
+datetime
+warnings
