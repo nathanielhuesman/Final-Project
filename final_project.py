@@ -124,7 +124,7 @@ def get_data(ticker, start, end):
     info = stock.info
     return df, info
 
-if run_btn or True:  # auto-load on start
+if run_btn:  # auto-load on start
     with st.spinner(f"Fetching data for **{ticker}**..."):
         try:
             df, info = get_data(ticker, start_date, end_date)
