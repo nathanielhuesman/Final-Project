@@ -194,10 +194,18 @@ if run_btn or "loaded" not in st.session_state:
 
     st.metric("Model RMSE", f"{rmse:.2f}")
 
-    # ── Signal summary ───────────────────────────────
-    if len(golden_cross) > 0 and golden_cross.index[-1] > death_cross.index[-1]:
+    # ── Signal summary (FIXED) ───────────────────────────────
+if len(golden_cross) > 0 and len(death_cross) > 0:
+    if golden_cross.index[-1] > death_cross.index[-1]:
         st.success("🟢 Latest Signal: BUY (Golden Cross)")
-    elif len(death_cross) > 0:
-        st.error("🔴 Latest Signal: SELL (Death Cross)")
     else:
-        st.info("No recent crossover signal")
+        st.error("🔴 Latest Signal: SELL (Death Cross)")
+
+elif len(golden_cross) > 0:
+    st.success("🟢 Latest Signal: BUY (Golden Cross)")
+
+elif len(death_cross) > 0:
+    st.error("🔴 Latest Signal: SELL (Death Cross)")
+
+else:
+    st.info("No crossover signals yet")
