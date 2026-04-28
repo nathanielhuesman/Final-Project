@@ -191,52 +191,52 @@ if run_btn or True:  # auto-load on start
     df["BB_Lower"] = df["BB_Mid"] - 2 * bb_std
 
 # ── Price & MA chart ──────────────────────────────────────────────────────
-st.markdown('<div class="section-bar">Price History & Moving Averages</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-bar">Price History & Moving Averages</div>', unsafe_allow_html=True)
 
-fig = make_subplots(rows=3, cols=1, shared_xaxes=True,
-                    row_heights=[0.55, 0.25, 0.20],
-                    vertical_spacing=0.04)
+    fig = make_subplots(rows=3, cols=1, shared_xaxes=True,
+                        row_heights=[0.55, 0.25, 0.20],
+                        vertical_spacing=0.04)
 
-# Candlestick
-fig.add_trace(go.Candlestick(
-    x=df["Date"], open=df["Open"], high=df["High"],
-    low=df["Low"], close=df["Close"],
-    increasing_line_color="#00d4aa", decreasing_line_color="#ff4d6d",
-    name="OHLC"), row=1, col=1)
+    # Candlestick
+    fig.add_trace(go.Candlestick(
+        x=df["Date"], open=df["Open"], high=df["High"],
+        low=df["Low"], close=df["Close"],
+        increasing_line_color="#00d4aa", decreasing_line_color="#ff4d6d",
+        name="OHLC"), row=1, col=1)
 
-fig.add_trace(go.Scatter(x=df["Date"], y=df[f"MA{ma_short}"],
-    line=dict(color="#f4c542", width=1.2), name=f"MA{ma_short}"), row=1, col=1)
-fig.add_trace(go.Scatter(x=df["Date"], y=df[f"MA{ma_long}"],
-    line=dict(color="#7b6bff", width=1.2), name=f"MA{ma_long}"), row=1, col=1)
-fig.add_trace(go.Scatter(x=df["Date"], y=df["BB_Upper"],
-    line=dict(color="#444", width=0.8, dash="dot"), name="BB Upper"), row=1, col=1)
-fig.add_trace(go.Scatter(x=df["Date"], y=df["BB_Lower"],
-    line=dict(color="#444", width=0.8, dash="dot"), name="BB Lower",
-    fill="tonexty", fillcolor="rgba(100,100,100,0.07)"), row=1, col=1)
+    fig.add_trace(go.Scatter(x=df["Date"], y=df[f"MA{ma_short}"],
+        line=dict(color="#f4c542", width=1.2), name=f"MA{ma_short}"), row=1, col=1)
+    fig.add_trace(go.Scatter(x=df["Date"], y=df[f"MA{ma_long}"],
+        line=dict(color="#7b6bff", width=1.2), name=f"MA{ma_long}"), row=1, col=1)
+    fig.add_trace(go.Scatter(x=df["Date"], y=df["BB_Upper"],
+        line=dict(color="#444", width=0.8, dash="dot"), name="BB Upper"), row=1, col=1)
+    fig.add_trace(go.Scatter(x=df["Date"], y=df["BB_Lower"],
+        line=dict(color="#444", width=0.8, dash="dot"), name="BB Lower",
+        fill="tonexty", fillcolor="rgba(100,100,100,0.07)"), row=1, col=1)
 
-# Volume
-colors = ["#00d4aa" if c >= o else "#ff4d6d"
-          for c, o in zip(df["Close"], df["Open"])]
-fig.add_trace(go.Bar(x=df["Date"], y=df["Volume"],
-    marker_color=colors, name="Volume", opacity=0.7), row=2, col=1)
+    # Volume
+    colors = ["#00d4aa" if c >= o else "#ff4d6d"
+              for c, o in zip(df["Close"], df["Open"])]
+    fig.add_trace(go.Bar(x=df["Date"], y=df["Volume"],
+        marker_color=colors, name="Volume", opacity=0.7), row=2, col=1)
 
-# RSI
-fig.add_trace(go.Scatter(x=df["Date"], y=df["RSI"],
-    line=dict(color="#a78bfa", width=1.5), name="RSI"), row=3, col=1)
-fig.add_hline(y=70, line_color="#ff4d6d", line_dash="dot", line_width=0.8, row=3, col=1)
-fig.add_hline(y=30, line_color="#00d4aa", line_dash="dot", line_width=0.8, row=3, col=1)
+    # RSI
+    fig.add_trace(go.Scatter(x=df["Date"], y=df["RSI"],
+        line=dict(color="#a78bfa", width=1.5), name="RSI"), row=3, col=1)
+    fig.add_hline(y=70, line_color="#ff4d6d", line_dash="dot", line_width=0.8, row=3, col=1)
+    fig.add_hline(y=30, line_color="#00d4aa", line_dash="dot", line_width=0.8, row=3, col=1)
 
-fig.update_layout(
-    height=650, paper_bgcolor="#0d0f14", plot_bgcolor="#0d0f14",
-    font=dict(color="#7b8299", size=11),
-    legend=dict(bgcolor="#131620", bordercolor="#1e2235", borderwidth=1),
-    xaxis_rangeslider_visible=False,
-    margin=dict(l=0, r=0, t=10, b=0),
-)
-for ax in ["xaxis", "xaxis2", "xaxis3", "yaxis", "yaxis2", "yaxis3"]:
-    fig.update_layout({ax: dict(gridcolor="#1a1d2e", showgrid=True)})
+    fig.update_layout(
+        height=650, paper_bgcolor="#0d0f14", plot_bgcolor="#0d0f14",
+        font=dict(color="#7b8299", size=11),
+        legend=dict(bgcolor="#131620", bordercolor="#1e2235", borderwidth=1),
+        xaxis_rangeslider_visible=False,
+        margin=dict(l=0, r=0, t=10, b=0),
+    )
+    for ax in ["xaxis", "xaxis2", "xaxis3", "yaxis", "yaxis2", "yaxis3"]:
+        fig.update_layout({ax: dict(gridcolor="#1a1d2e", showgrid=True)})
 
-st.plotly_chart(fig, width='stretch')
+    st.plotly_chart(fig, use_container_width=True)
 
 # ── ML Prediction ─────────────────────────────────────────────────────────
     st.markdown('<div class="section-bar">Linear Regression Price Prediction</div>', unsafe_allow_html=True)
@@ -342,31 +342,31 @@ st.plotly_chart(fig, width='stretch')
     st.markdown("---")
 
 # ── Returns distribution ──────────────────────────────────────────────────
-st.markdown('<div class="section-bar">Returns Distribution & Risk</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-bar">Returns Distribution & Risk</div>', unsafe_allow_html=True)
 
-rc1, rc2 = st.columns(2)
-with rc1:
-    fig3 = px.histogram(df.dropna(), x="Daily_Return", nbins=60,
-                        color_discrete_sequence=["#7b6bff"])
-    fig3.update_layout(
-        height=280, paper_bgcolor="#0d0f14", plot_bgcolor="#0d0f14",
-        font=dict(color="#7b8299"), margin=dict(l=0,r=0,t=10,b=0),
-        xaxis=dict(gridcolor="#1a1d2e"), yaxis=dict(gridcolor="#1a1d2e"),
-        title=dict(text="Daily Return Distribution", font=dict(color="#e8eaf0", size=13)))
-    st.plotly_chart(fig3, width='stretch')
+    rc1, rc2 = st.columns(2)
+    with rc1:
+        fig3 = px.histogram(df.dropna(), x="Daily_Return", nbins=60,
+                            color_discrete_sequence=["#7b6bff"])
+        fig3.update_layout(
+            height=280, paper_bgcolor="#0d0f14", plot_bgcolor="#0d0f14",
+            font=dict(color="#7b8299"), margin=dict(l=0,r=0,t=10,b=0),
+            xaxis=dict(gridcolor="#1a1d2e"), yaxis=dict(gridcolor="#1a1d2e"),
+            title=dict(text="Daily Return Distribution", font=dict(color="#e8eaf0", size=13)))
+        st.plotly_chart(fig3, use_container_width=True)
 
-with rc2:
-    fig4 = go.Figure()
-    fig4.add_trace(go.Scatter(
-        x=df["Date"], y=df["Volatility_20"],
-        fill="tozeroy", fillcolor="rgba(255,77,109,0.12)",
-        line=dict(color="#ff4d6d", width=1.5), name="Annualised Vol (20d)"))
-    fig4.update_layout(
-        height=280, paper_bgcolor="#0d0f14", plot_bgcolor="#0d0f14",
-        font=dict(color="#7b8299"), margin=dict(l=0,r=0,t=10,b=0),
-        xaxis=dict(gridcolor="#1a1d2e"), yaxis=dict(gridcolor="#1a1d2e"),
-        title=dict(text="Rolling 20-Day Volatility", font=dict(color="#e8eaf0", size=13)))
-    st.plotly_chart(fig4, width='stretch')
+    with rc2:
+        fig4 = go.Figure()
+        fig4.add_trace(go.Scatter(
+            x=df["Date"], y=df["Volatility_20"],
+            fill="tozeroy", fillcolor="rgba(255,77,109,0.12)",
+            line=dict(color="#ff4d6d", width=1.5), name="Annualised Vol (20d)"))
+        fig4.update_layout(
+            height=280, paper_bgcolor="#0d0f14", plot_bgcolor="#0d0f14",
+            font=dict(color="#7b8299"), margin=dict(l=0,r=0,t=10,b=0),
+            xaxis=dict(gridcolor="#1a1d2e"), yaxis=dict(gridcolor="#1a1d2e"),
+            title=dict(text="Rolling 20-Day Volatility", font=dict(color="#e8eaf0", size=13)))
+        st.plotly_chart(fig4, use_container_width=True)
 
 # ── Raw data table ────────────────────────────────────────────────────────
     with st.expander("📋 View Raw Data"):
