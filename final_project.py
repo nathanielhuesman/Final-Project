@@ -117,7 +117,7 @@ st.markdown("**Real-time stock analytics, technical indicators & ML price predic
 st.markdown("---")
 
 # ── Data fetch ────────────────────────────────────────────────────────────────
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=1800)
 def get_data(ticker, start, end):
     stock = yf.Ticker(ticker)
     df = stock.history(start=start, end=end)
@@ -127,7 +127,21 @@ def get_data(ticker, start, end):
 if run_btn:  # auto-load on start
     with st.spinner(f"Fetching data for **{ticker}**..."):
         try:
-            df, info = get_data(ticker, start_date, end_date)
+            import time
+
+def safe_fetch():
+    for i in range(3):
+        try:
+            return get_data(ticker, start_date, end_date)
+        except Exception as e:
+            if "Too Many Requests" in str(e):
+                time.sleep(2 * (i + 1))
+            else:
+                raise e
+    st.error("Rate limited by Yahoo Finance. Try again in a few seconds.")
+    st.stop()
+
+df, info = safe_fetch()
         except Exception as e:
             st.error(f"Could not fetch data: {e}")
             st.stop()
